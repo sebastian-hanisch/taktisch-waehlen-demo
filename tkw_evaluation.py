@@ -106,13 +106,13 @@ def verdict_state(a: Analysis) -> tuple[str, str]:
         return "success", f"Bei zwei Kandidaten entscheidet die Mehrheit, und keine Regel lässt sich überlisten: kein Wähler kann das Ergebnis allein verbessern (0 von {s.n})."
     if s.rule == "dictator":
         return "success", (f"Bei der Diktatur kann kein Wähler etwas gewinnen (0 von {s.n}): der Diktator bekommt ohnehin seinen ersten Platz, alle anderen ändern nichts. "
-                           "Das ist die einzige Regel mit mindestens drei möglichen Siegern, die nicht manipulierbar ist, um den Preis, dass nur eine Stimme zählt.")
+                           "Bei mindestens drei möglichen Siegern ist das die einzige Art von Regel, die nicht manipulierbar ist, um den Preis, dass nur eine Stimme zählt.")
     if r.voters == 0:
         return "info", f"In diesem Profil kann bei {name} kein Wähler allein ein besseres Ergebnis erzwingen (0 von {s.n}). In anderen Profilen kann das sehr wohl gehen: die Messreihen unten zählen es."
     text = (f"Bei {name} können {r.voters} von {s.n} Wählern ({pct(r.voters / s.n)}) das Ergebnis allein zu ihren Gunsten drehen. "
             f"Das beste Beispiel: {manipulation_text(r.best)}.")
     if r.voters_free == 0:
-        return "warning", text + " Alle diese Manipulationen **leben vom Gleichstand**: ohne das Los (oder bei einer anderen Gleichstandsregel) gelingt keine."
+        return "warning", text + " Alle diese Manipulationen **brauchen einen Gleichstand** im ehrlichen oder im manipulierten Lauf; ob sie gelingen, hängt von der Gleichstandsregel (hier dem Los) ab."
     return "warning", text + f" **Ohne Hilfe eines Gleichstands** gelingt es {r.voters_free} von {s.n}."
 
 
@@ -186,7 +186,7 @@ def verdict_rules(rows: list[dict]) -> tuple[str, str]:
     plur = next(r for r in cell if r["rule"] == "plurality")
     return "info", (f"Bei {m} Kandidaten und {n} Wählern kann in {pct(lo['profiles'])} der Zufallsprofile mindestens ein Wähler allein manipulieren, wenn nach {short_rule(lo['rule'])} gezählt wird, "
                     f"und in {pct(hi['profiles'])} bei {short_rule(hi['rule'])}. Bei der Mehrheitswahl gelingt es nur über einen Gleichstand ({pct(plur['profiles_free'])} ohne). "
-                    "Eine Regel ohne jede Manipulierbarkeit gibt es mit drei oder mehr Kandidaten nur als Diktatur.")
+                    "Eine Regel, bei der mindestens drei Kandidaten gewinnen können, ist nur als Diktatur nicht manipulierbar.")
 
 
 def verdict_models(rows: list[dict]) -> tuple[str, str]:

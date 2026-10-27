@@ -30,7 +30,7 @@ def test_verdict_for_plurality_that_lives_on_the_tie(seven, tb_ba):
     assert kind == "warning"
     assert text == ("Bei Mehrheitswahl können 2 von 7 Wählern (29 %) das Ergebnis allein zu ihren Gunsten drehen. "
                     "Das beste Beispiel: ein Wähler mit der Rangfolge C > B > A gibt B > A > C an, dann gewinnt B statt A (1 Platz besser für ihn). "
-                    "Alle diese Manipulationen **leben vom Gleichstand**: ohne das Los (oder bei einer anderen Gleichstandsregel) gelingt keine.")
+                    "Alle diese Manipulationen **brauchen einen Gleichstand** im ehrlichen oder im manipulierten Lauf; ob sie gelingen, hängt von der Gleichstandsregel (hier dem Los) ab.")
 
 
 def test_verdict_when_nobody_can_manipulate(seven, tb_id):
@@ -53,7 +53,7 @@ def test_verdict_for_two_candidates_and_for_the_dictator(seven, tb_id):
     kind, text = ev.verdict_state(make([[0, 1], [1, 0], [0, 1]], np.array([0, 1])))
     assert kind == "success" and text == "Bei zwei Kandidaten entscheidet die Mehrheit, und keine Regel lässt sich überlisten: kein Wähler kann das Ergebnis allein verbessern (0 von 3)."
     kind, text = ev.verdict_state(make(seven, tb_id, "dictator"))
-    assert kind == "success" and text.startswith("Bei der Diktatur kann kein Wähler etwas gewinnen (0 von 7)") and "einzige Regel" in text
+    assert kind == "success" and text.startswith("Bei der Diktatur kann kein Wähler etwas gewinnen (0 von 7)") and "einzige Art von Regel" in text
 
 
 def test_rule_rows_by_hand(seven, tb_ba):
@@ -90,7 +90,7 @@ def test_rules_row_and_verdict():
     assert kind == "info"
     assert text == ("Bei 3 Kandidaten und 51 Wählern kann in 5 % der Zufallsprofile mindestens ein Wähler allein manipulieren, wenn nach Copeland gezählt wird, "
                     "und in 19 % bei Mehrheitswahl. Bei der Mehrheitswahl gelingt es nur über einen Gleichstand (0 % ohne). "
-                    "Eine Regel ohne jede Manipulierbarkeit gibt es mit drei oder mehr Kandidaten nur als Diktatur.")
+                    "Eine Regel, bei der mindestens drei Kandidaten gewinnen können, ist nur als Diktatur nicht manipulierbar.")
 
 
 def test_models_verdict_by_hand():
